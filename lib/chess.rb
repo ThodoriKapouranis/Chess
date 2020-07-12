@@ -78,6 +78,12 @@ class Chess
 
   end
 
+  def valid_tile?(tile)
+    return false unless tile.length==2
+    return false unless [tile[0]].any? {|x| ["a","b","c","d","e","f","g","h"].include?(x)}
+    return false unless (tile[1].to_i>0 and tile[1].to_i<9)
+    true
+  end
   def parse_tile(tile) "EX: a1 -> [7,0]"
     x_pos = @parse_hash.key(tile[0])
     y_pos = 8-tile[1].to_i
