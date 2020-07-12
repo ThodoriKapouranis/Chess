@@ -21,7 +21,7 @@ class Chess
       4 => "e",
       5 => "f",
       6 => "g",
-      7 => "f",
+      7 => "h",
     }
   end
 
@@ -29,12 +29,29 @@ class Chess
   def play()
     default_board_start()
     display()
-
+    make_move("a2","a3")
+    p @board[5][0]
+    display()
   end
+
   def display
     @board[0][3]="♛"
     @board.each_with_index {|row,index| print (8-index).to_s+" "+row.join(" ")+"\n"}
-    puts "0 a b c d e f g h"
+    print "0 a b c d e f g h\n\n"
+  end
+
+  def make_move(from,to) #Expecting "a4"-like notation
+    from_y = parse_tile(from)[0].join.to_i  # [6] -> 6
+    from_x = parse_tile(from)[1].join.to_i
+    to_y   = parse_tile(to)[0].join.to_i
+    to_x   = parse_tile(to)[1].join.to_i
+
+    allowable_moves = @board[from_y][from_x].check_moves
+    if true   # allowable_moves.includes?([to_y,to_x])
+      @board[to_y][to_x]= @board[from_y][from_x]
+      @board[to_y][to_x].update_pos(to)
+      @board[from_y][from_x]="☐"
+    end
   end
   
   private
@@ -59,6 +76,12 @@ class Chess
     @board[7][7]=Rook.new("white","h1")
     8.times {|x| @board[6][x]=Pawn.new("white",@parse_hash[x]+"2")}
 
+  end
+
+  def parse_tile(tile) "EX: a1 -> [7,0]"
+    x_pos = @parse_hash.key(tile[0])
+    y_pos = 8-tile[1].to_i
+    [[y_pos] , [x_pos] ]
   end
 end
 
