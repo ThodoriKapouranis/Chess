@@ -1,10 +1,65 @@
 class Chess
-
+  attr_reader :board, :turn, :game_over
   def initialize()
     @turn="white"
     @game_over=false
+    @board=[
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+      ["☐","☐","☐","☐","☐","☐","☐","☐"],
+    ]
+    @parse_hash={
+      0 => "a",
+      1 => "b",
+      2 => "c",
+      3 => "d",
+      4 => "e",
+      5 => "f",
+      6 => "g",
+      7 => "f",
+    }
   end
 
+  public 
+  def play()
+    default_board_start()
+    display()
+
+  end
+  def display
+    @board[0][3]="♛"
+    @board.each_with_index {|row,index| print (8-index).to_s+" "+row.join(" ")+"\n"}
+    puts "0 a b c d e f g h"
+  end
+  
+  private
+  def default_board_start
+    @board[0][0]=Rook.new("black","a8")
+    @board[0][1]=Knight.new("black","b8")
+    @board[0][2]=Bishop.new("black","c8")
+    @board[0][3]=Queen.new("black","d8")
+    @board[0][4]=King.new("black","e8")
+    @board[0][5]=Bishop.new("black","f8")
+    @board[0][6]=Knight.new("black","g8")
+    @board[0][7]=Rook.new("black","h8")
+    8.times {|x| @board[1][x]=Pawn.new("black",@parse_hash[x]+"7")}
+
+    @board[7][0]=Rook.new("white","a1")
+    @board[7][1]=Knight.new("white","b1")
+    @board[7][2]=Bishop.new("white","c1")
+    @board[7][3]=Queen.new("white","d1")
+    @board[7][4]=King.new("white","e1")
+    @board[7][5]=Bishop.new("white","f1")
+    @board[7][6]=Knight.new("white","g1")
+    @board[7][7]=Rook.new("white","h1")
+    8.times {|x| @board[6][x]=Pawn.new("white",@parse_hash[x]+"2")}
+
+  end
 end
 
 
@@ -13,11 +68,15 @@ class Piece
   def initialize(color,position)
     @color=color
     @position=position
+    @symbol=""
   end
 
   public
   def update_pos(new_pos)
     @position=new_pos
+  end
+  def to_s
+    return @symbol
   end
 end
 
@@ -87,3 +146,6 @@ class King < Piece
   
   end
 end
+
+game = Chess.new
+game.play()
