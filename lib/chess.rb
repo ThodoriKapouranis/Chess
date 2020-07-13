@@ -148,22 +148,30 @@ class Pawn < Piece
 
     if ( @direction=="up" && cur_y!=0)
 
-      unless (board[cur_y-1][cur_x]!="☐")   #Move forward
+      if (board[cur_y-1][cur_x]=="☐")   #Move forward
         valid_moves.push([cur_y-1,cur_x]) 
       end
 
-      if (is_bound?(cur_x-1) && board[cur_y-1][cur_x-1]!="☐") #NW
+      if (cur_y==6 && board[cur_y-2][cur_x]=="☐") #Move
+        valid_moves.push([cur_y-2,cur_x])
+      end
+
+      if (is_bound?(cur_x-1) && board[cur_y-1][cur_x-1]!="☐") #NW attack
         valid_moves.push([cur_y-1,cur_x-1])
       end
 
-      if (is_bound?(cur_x+1) && board[cur_y-1][cur_x+1]!="☐") #NE
+      if (is_bound?(cur_x+1) && board[cur_y-1][cur_x+1]!="☐") #NE attack
         valid_moves.push([cur_y-1,cur_x+1])
       end
     end
 
-    if @direction=="down"
-      unless (cur_y==7 or board[cur_y+1][cur_x]!="☐")
+    if (@direction=="down" && cur_y!=7)
+      if ( board[cur_y+1][cur_x]=="☐")
         valid_moves.push([cur_y+1,cur_x])
+      end
+
+      if (cur_y==1 && board[cur_y+2][cur_x]=="☐")
+        valid_moves.push([cur_y+2,cur_x])  
       end
 
       if (is_bound?(cur_x-1) && board[cur_y+1][cur_x-1]!="☐") #SW
@@ -238,8 +246,3 @@ class King < Piece
   
   end
 end
-
-game = Chess.new
-game.default_board_start
-game.make_move("a2","a3")
-game.make_move("a2","a3")

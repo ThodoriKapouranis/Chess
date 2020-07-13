@@ -75,6 +75,19 @@ describe Pawn do
       expect(game.make_move("a3","b2")).to eql([6,1])
       game.display
     end
+    it "Can move two from starting position (white)" do
+      game = Chess.new
+      game.default_board_start
+      expect(game.make_move("a2","a4")).to eql([4,0])
+      game.display
+    end
+
+    it "Can move two from starting position (black)" do
+      game = Chess.new
+      game.default_board_start
+      expect(game.make_move("a7","a5")).to eql([3,0])
+      game.display
+    end
 
   end
 end
