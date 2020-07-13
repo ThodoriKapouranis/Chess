@@ -109,6 +109,7 @@ class Piece
     @color=color
     @position=position
     @symbol=""
+    @valid_moves=[]
   end
 
   public
@@ -142,48 +143,47 @@ class Pawn < Piece
   end
 
   def check_moves(board)
-    valid_moves=[]
     cur_y=@position[0]
     cur_x=@position[1]
-
+    @valid_moves=[]
     if ( @direction=="up" && cur_y!=0)
 
       if (board[cur_y-1][cur_x]=="☐")   #Move forward
-        valid_moves.push([cur_y-1,cur_x]) 
+        @valid_moves.push([cur_y-1,cur_x]) 
       end
 
       if (cur_y==6 && board[cur_y-2][cur_x]=="☐") #Move
-        valid_moves.push([cur_y-2,cur_x])
+        @valid_moves.push([cur_y-2,cur_x])
       end
 
       if (is_bound?(cur_x-1) && board[cur_y-1][cur_x-1]!="☐") #NW attack
-        valid_moves.push([cur_y-1,cur_x-1])
+        @valid_moves.push([cur_y-1,cur_x-1])
       end
 
       if (is_bound?(cur_x+1) && board[cur_y-1][cur_x+1]!="☐") #NE attack
-        valid_moves.push([cur_y-1,cur_x+1])
+        @valid_moves.push([cur_y-1,cur_x+1])
       end
     end
 
     if (@direction=="down" && cur_y!=7)
       if ( board[cur_y+1][cur_x]=="☐")
-        valid_moves.push([cur_y+1,cur_x])
+        @valid_moves.push([cur_y+1,cur_x])
       end
 
       if (cur_y==1 && board[cur_y+2][cur_x]=="☐")
-        valid_moves.push([cur_y+2,cur_x])  
+        @valid_moves.push([cur_y+2,cur_x])  
       end
 
       if (is_bound?(cur_x-1) && board[cur_y+1][cur_x-1]!="☐") #SW
-        valid_moves.push([cur_y+1,cur_x-1])
+        @valid_moves.push([cur_y+1,cur_x-1])
       end
 
       if (is_bound?(cur_x+1) && board[cur_y+1][cur_x+1]!="☐") #SE
-        valid_moves.push([cur_y+1,cur_x+1])
+        @valid_moves.push([cur_y+1,cur_x+1])
       end
 
     end
-    valid_moves
+    @valid_moves
   end
 end
 
@@ -207,7 +207,7 @@ class Bishop < Piece
     @symbol="♝" if @color.downcase=="black"
   end
   def check_moves
-  
+    
   end
 end
 
