@@ -101,9 +101,8 @@ class Chess
   end
 end
 
-
 class Piece
-  attr_reader :position, :color
+  attr_reader :position, :color, :symbol
   def initialize(color,position)
     @color=color
     @position=position
@@ -129,19 +128,7 @@ class Piece
     end
   end
 
-end
-
-class Pawn < Piece
-  attr_reader :symbol
-  def initialize(color, position)
-    super(color,position)
-    @symbol="♙" if @color.downcase=="white"
-    @symbol="♟︎" if @color.downcase=="black"
-    @direction="up" if @color.downcase=="white"
-    @direction="down" if @color.downcase=="black"
-  end
-
-  def check_moves(board)
+  def pawn_movement(board)
     cur_y=@position[0]
     cur_x=@position[1]
     @valid_moves=[]
@@ -183,34 +170,14 @@ class Pawn < Piece
 
     end
     @valid_moves
-  end
-end
+  end  
 
-class Knight < Piece
-  attr_reader :symbol
-  def initialize(color, position)
-    super(color,position)
-    @symbol="♘" if @color.downcase=="white"
-    @symbol="♞" if @color.downcase=="black"
-  end
-  def check_moves
-  
-  end
-end
-
-class Bishop < Piece
-  attr_reader :symbol
-  def initialize(color, position)
-    super(color,position)
-    @symbol="♗" if @color.downcase=="white"
-    @symbol="♝" if @color.downcase=="black"
-  end
-  def check_moves(board)
+  def bishop_movement(board)
     piece=board[@position[0]][@position[1]]
     cur_y=@position[0]
     cur_x=@position[1]
     @valid_moves=[]
-    
+
     # North East
     cur_y=@position[0]
     cur_x=@position[1]
@@ -262,11 +229,47 @@ class Bishop < Piece
       cur_y+=1
     end
   @valid_moves
+  end  
+end
+
+class Pawn < Piece
+  def initialize(color, position)
+    super(color,position)
+    @symbol="♙" if @color.downcase=="white"
+    @symbol="♟︎" if @color.downcase=="black"
+    @direction="up" if @color.downcase=="white"
+    @direction="down" if @color.downcase=="black"
+  end
+
+  def check_moves(board)
+    pawn_movement(board)
   end
 end
 
+class Knight < Piece
+  def initialize(color, position)
+    super(color,position)
+    @symbol="♘" if @color.downcase=="white"
+    @symbol="♞" if @color.downcase=="black"
+  end
+  def check_moves
+  
+  end
+end
+
+class Bishop < Piece
+  def initialize(color, position)
+    super(color,position)
+    @symbol="♗" if @color.downcase=="white"
+    @symbol="♝" if @color.downcase=="black"
+  end
+  def check_moves(board)
+    bishop_movement(board)
+  end
+
+end
+
 class Rook < Piece
-  attr_reader :symbol
   def initialize(color, position)
     super(color,position)
     @symbol="♖" if @color.downcase=="white"
@@ -278,7 +281,6 @@ class Rook < Piece
 end
 
 class Queen < Piece
-  attr_reader :symbol
   def initialize(color, position)
     super(color,position)
     @symbol="♕" if @color.downcase=="white"
@@ -290,7 +292,6 @@ class Queen < Piece
 end
 
 class King < Piece
-  attr_reader :symbol
   def initialize(color, position)
     super(color,position)
     @symbol="♔" if @color.downcase=="white"
