@@ -91,3 +91,19 @@ describe Pawn do
 
   end
 end
+
+describe Bishop do
+  describe '#check_moves' do
+    it "can move move diagonally all NE NW SE SW" do
+      game = Chess.new
+      game.default_board_start
+      game.make_move('g2','g3')
+      game.make_move('f1','h3')
+      game.make_move('h3','d7')
+      game.make_move('d7','a4')
+      game.make_move('a4','b3')
+      expect(game.make_move('b3','f7')).to eql([1,5])
+      game.display
+    end
+  end
+end

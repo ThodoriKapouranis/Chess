@@ -35,7 +35,6 @@ class Chess
   end
 
   def display
-    @board[0][3]="♛"
     @board.each_with_index {|row,index| print (8-index).to_s+" "+row.join(" ")+"\n"}
     print "0 a b c d e f g h\n\n"
   end
@@ -206,8 +205,63 @@ class Bishop < Piece
     @symbol="♗" if @color.downcase=="white"
     @symbol="♝" if @color.downcase=="black"
   end
-  def check_moves
+  def check_moves(board)
+    piece=board[@position[0]][@position[1]]
+    cur_y=@position[0]
+    cur_x=@position[1]
+    @valid_moves=[]
     
+    # North East
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until (cur_y<=0 or cur_x>=7)
+      p [cur_y,cur_x]
+      if (board[cur_y-1][cur_x+1]!="☐")       
+        @valid_moves.push([cur_y-1,cur_x+1]) if (board[cur_y-1][cur_x+1].color!=piece.color)
+        break
+      end
+
+      @valid_moves.push([cur_y-1,cur_x+1])
+      cur_x+=1
+      cur_y-=1
+    end
+    # North West
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until (cur_y<=0 or cur_x<=0)
+      if (board[cur_y-1][cur_x-1]!="☐")                #Upon hitting a piece, 
+        @valid_moves.push([cur_y-1,cur_x-1]) if (board[cur_y-1][cur_x-1].color!=piece.color)
+        break
+      end
+      @valid_moves.push([cur_y-1,cur_x-1]) 
+      cur_x-=1
+      cur_y-=1
+    end
+    #South East
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until (cur_y>=7 or cur_x>=7)
+      if (board[cur_y+1][cur_x+1]!="☐")                #Upon hitting a piece, 
+        @valid_moves.push([cur_y+1,cur_x+1]) if (board[cur_y+1][cur_x+1].color!=piece.color)
+        break
+      end
+      @valid_moves.push([cur_y+1,cur_x+1]) 
+      cur_x+=1
+      cur_y+=1
+    end
+    #South West
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until (cur_y>=7 or cur_x<=0)
+      if (board[cur_y+1][cur_x-1]!="☐")                #Upon hitting a piece, 
+        @valid_moves.push([cur_y+1,cur_x-1]) if (board[cur_y+1][cur_x-1].color!=piece.color)
+        break
+      end
+      @valid_moves.push([cur_y+1,cur_x-1]) 
+      cur_x-=1
+      cur_y+=1
+    end
+  @valid_moves
   end
 end
 
