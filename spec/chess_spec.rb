@@ -109,7 +109,7 @@ describe Bishop do
 end
 
 describe Rook do
-  describe "#check_move" do
+  describe "#check_moves" do
     it "Allows cardinal movement" do
       game = Chess.new
       game.default_board_start
@@ -120,6 +120,23 @@ describe Rook do
       game.make_move("h4","b4")
       game.make_move("b4","b7")
       expect(game.make_move("b7","b2")).to eql(false)
+      game.display
+    end
+  end
+end
+
+describe Queen do
+  describe "#check_moves" do
+    it "should allow moves that both rook and bishop have" do
+      game = Chess.new
+      game.default_board_start
+      game.make_move("e2","e4")
+      game.make_move("d1","h5")
+      game.make_move("h5","f7")
+      game.make_move("f7","e7")
+      game.make_move("e7","d7")
+      game.make_move("d7","c7")
+      expect(game.make_move("c7","d5")).to eql(false)
       game.display
     end
   end

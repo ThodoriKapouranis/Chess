@@ -279,8 +279,6 @@ class Piece
       @valid_moves.push([cur_y-1,cur_x])
       cur_y-=1
     end
-    puts "Valid moves:"
-    p @valid_moves
     @valid_moves
   end
 
@@ -341,8 +339,8 @@ class Queen < Piece
     @symbol="♕" if @color.downcase=="white"
     @symbol="♛" if @color.downcase=="black"
   end
-  def check_moves
-  
+  def check_moves(board)
+    rook_movement(board)+bishop_movement(board)
   end
 end
 
