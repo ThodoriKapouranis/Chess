@@ -182,16 +182,15 @@ class Piece
     cur_y=@position[0]
     cur_x=@position[1]
     until (cur_y<=0 or cur_x>=7)
-      p [cur_y,cur_x]
       if (board[cur_y-1][cur_x+1]!="☐")       
         @valid_moves.push([cur_y-1,cur_x+1]) if (board[cur_y-1][cur_x+1].color!=piece.color)
         break
       end
-
       @valid_moves.push([cur_y-1,cur_x+1])
       cur_x+=1
       cur_y-=1
     end
+
     # North West
     cur_y=@position[0]
     cur_x=@position[1]
@@ -204,6 +203,7 @@ class Piece
       cur_x-=1
       cur_y-=1
     end
+
     #South East
     cur_y=@position[0]
     cur_x=@position[1]
@@ -216,6 +216,7 @@ class Piece
       cur_x+=1
       cur_y+=1
     end
+
     #South West
     cur_y=@position[0]
     cur_x=@position[1]
@@ -230,6 +231,60 @@ class Piece
     end
   @valid_moves
   end  
+
+  def rook_movement(board)
+    piece=board[@position[0]][@position[1]]
+    @valid_moves=[]
+
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until cur_x<=0 #Check left
+      if (board[cur_y][cur_x-1]!="☐")
+        @valid_moves.push([cur_y,cur_x-1]) if board[cur_y][cur_x-1].color!=piece.color
+        break
+      end     
+      @valid_moves.push([cur_y,cur_x-1])
+      cur_x-=1
+    end    
+
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until cur_x>=7 #Check right
+      if (board[cur_y][cur_x+1]!="☐")
+        @valid_moves.push([cur_y,cur_x+1]) if board[cur_y][cur_x+1].color!=piece.color
+        break
+      end     
+      @valid_moves.push([cur_y,cur_x+1])
+      cur_x+=1
+    end
+
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until cur_y>=7 #Check down
+      if (board[cur_y+1][cur_x]!="☐")
+        @valid_moves.push([cur_y+1,cur_x]) if board[cur_y+1][cur_x].color!=piece.color
+        break
+      end     
+      @valid_moves.push([cur_y+1,cur_x])
+      cur_y+=1
+    end
+
+    cur_y=@position[0]
+    cur_x=@position[1]
+    until cur_y<=0 #Check up
+      if (board[cur_y-1][cur_x]!="☐")
+        @valid_moves.push([cur_y-1,cur_x]) if board[cur_y-1][cur_x].color!=piece.color
+        break
+      end     
+      @valid_moves.push([cur_y-1,cur_x])
+      cur_y-=1
+    end
+    puts "Valid moves:"
+    p @valid_moves
+    @valid_moves
+  end
+
+
 end
 
 class Pawn < Piece
@@ -275,8 +330,8 @@ class Rook < Piece
     @symbol="♖" if @color.downcase=="white"
     @symbol="♜" if @color.downcase=="black"
   end
-  def check_moves
-  
+  def check_moves(board)
+    rook_movement(board)
   end
 end
 

@@ -107,3 +107,20 @@ describe Bishop do
     end
   end
 end
+
+describe Rook do
+  describe "#check_move" do
+    it "Allows cardinal movement" do
+      game = Chess.new
+      game.default_board_start
+      game.make_move("a2","a4")
+      game.make_move("a1","a3")
+      game.make_move("a3","h3")
+      game.make_move("h3","h4")
+      game.make_move("h4","b4")
+      game.make_move("b4","b7")
+      expect(game.make_move("b7","b2")).to eql(false)
+      game.display
+    end
+  end
+end
